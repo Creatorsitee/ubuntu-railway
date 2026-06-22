@@ -58,4 +58,4 @@ WORKDIR /root
 EXPOSE $PORT
 
 # CMD Baru: Bersih, super aman dari crash, dan mengikat ke IP 0.0.0.0
-CMD ["/bin/bash", "-c", "exec ttyd -W -i 0.0.0.0 -t fontSize=16 -t theme=dark -p ${PORT:-8080} -c ${USERNAME:-admin}:${PASSWORD:-admin123} /bin/bash"]
+CMD ["/bin/bash", "-c", "exec ttyd -W -i 0.0.0.0 -t fontSize=20 -t theme=dark -p ${PORT:-8080} -c ${USERNAME:-admin}:${PASSWORD:-admin123} /bin/bash"]
