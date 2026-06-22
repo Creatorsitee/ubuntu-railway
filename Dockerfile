@@ -44,28 +44,18 @@ RUN wget -O /usr/local/bin/ttyd \
     https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
     chmod +x /usr/local/bin/ttyd
 
-# 4. Kustomisasi Bash Statis
+# 4. Kustomisasi Bash (Dipindahkan ke sini agar aman dan dinamis saat dijalankan)
 RUN echo "fastfetch" >> /root/.bashrc && \
     echo "alias ll='ls -lah'" >> /root/.bashrc && \
     echo "alias cls='clear'" >> /root/.bashrc && \
-    echo "cd /root" >> /root/.bashrc
+    echo "cd /root" >> /root/.bashrc && \
+    echo "export PS1='\[\e[1;32m\]\${USERNAME:-admin}@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\$ '" >> /root/.bashrc
 
 # Set working directory utama
 WORKDIR /root
 
-# Trik khusus Railway agar mendeteksi port dinamis dan generate domain otomatis
+# Beritahu Railway untuk membuka jalur port dinamis
 EXPOSE $PORT
 
-# CMD Aman dengan perbaikan duplikasi PS1 dan lari di port dinamis Railway
-CMD ["/bin/bash", "-c", "\
-export USERNAME=${USERNAME:-admin}; \
-export PASSWORD=${PASSWORD:-admin123}; \
-sed -i '/export PS1=/d' /root/.bashrc; \
-echo \"export PS1='\\[\\e[1;32m\\]\$USERNAME@\\h\\[\\e[0m\\]:\\[\\e[1;34m\\]\\w\\[\\e[0m\\]\\$ '\" >> /root/.bashrc; \
-exec ttyd \
--W \
--t fontSize=16 \
--t theme=dark \
--p ${PORT:-8080} \
--c ${USERNAME}:${PASSWORD} \
-/bin/bash"]
+# CMD Baru: Bersih, super aman dari crash, dan mengikat ke IP 0.0.0.0
+CMD ["/bin/bash", "-c", "exec ttyd -W -i 0.0.0.0 -t fontSize=16 -t theme=dark -p ${PORT:-8080} -c ${USERNAME:-admin}:${PASSWORD:-admin123} /bin/bash"]
