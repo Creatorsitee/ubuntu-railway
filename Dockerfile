@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Jakarta
 
-# 1. Update & Install sistem utilities + Registrasi PPA Fastfetch
+# 1. Update & Install sistem utilities + Registrasi PPA Fastfetch resmi
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -53,13 +53,10 @@ RUN echo "fastfetch" >> /root/.bashrc && \
 # Set working directory utama
 WORKDIR /root
 
-# Healthcheck dinamis menyesuaikan PORT dari Railway (default ke 7681)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s \
-  CMD curl -f http://localhost:${PORT:-7681} || exit 1
+# Trik khusus Railway agar mendeteksi port dinamis dan generate domain otomatis
+EXPOSE $PORT
 
-EXPOSE 7681
-
-# CMD Aman: Menghapus baris PS1 lama sebelum menulis yang baru agar tidak duplikat saat restart
+# CMD Aman dengan perbaikan duplikasi PS1 dan lari di port dinamis Railway
 CMD ["/bin/bash", "-c", "\
 export USERNAME=${USERNAME:-admin}; \
 export PASSWORD=${PASSWORD:-admin123}; \
@@ -69,6 +66,6 @@ exec ttyd \
 -W \
 -t fontSize=16 \
 -t theme=dark \
--p ${PORT:-7681} \
+-p ${PORT:-8080} \
 -c ${USERNAME}:${PASSWORD} \
 /bin/bash"]
