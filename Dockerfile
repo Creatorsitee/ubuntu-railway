@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Jakarta
 
-# 1. Update & Install sistem utilities (Layer dioptimalkan)
+# 1. Update & Install sistem utilities + Registrasi PPA Fastfetch
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -25,8 +25,10 @@ RUN apt-get update && \
     python3-venv \
     build-essential \
     openssh-client \
-    sudo \
-    fastfetch && \
+    sudo && \
+    add-apt-repository -y ppa:zhangsongcui3371/fastfetch && \
+    apt-get update && \
+    apt-get install -y fastfetch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
