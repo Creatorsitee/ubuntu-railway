@@ -5,7 +5,7 @@
 
 Want to try out Ubuntu or want to have a mini version of Ubuntu available at all times? Then feel free to give this project a try:
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.com/template/4lvigd?referralCode=zkQBwB)
+[![Deploy on Railway]([https://railway.app/button.svg)](https://railway.com/template/4lvigd?referralCode=zkQBwB](https://railway.com/deploy/JsvkR3?referralCode=pzNQPs&utm_medium=integration&utm_source=template&utm_campaign=generic))
 
 ## Description
 
